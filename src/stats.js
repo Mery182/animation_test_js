@@ -1,4 +1,4 @@
-import Stats from 'stats.js';
+import Stats from '/src/stats2.js';
 
 const stats = new Stats();
 stats.showPanel(0); // 0: FPS, 1: MS, 2: MB
