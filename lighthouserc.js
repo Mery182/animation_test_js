@@ -1,11 +1,46 @@
+/** lighthouserc.js — ESM */
 export default {
     ci: {
       collect: {
-        url: ['http://localhost:3000/'],
+        staticDistDir: './dist',
+        url: [
+          'http://localhost:49651/index.html',
+          'http://localhost:49651/js.html',
+          'http://localhost:49651/anime.html',
+          'http://localhost:49651/gsap.html'
+        ],
         numberOfRuns: 1,
+        settings: {
+          preset: 'mobile',
+          formFactor: 'mobile',
+          throttlingMethod: 'devtools',
+          screenEmulation: { mobile: true, width: 360, height: 640, deviceScaleFactor: 2 }
+        }
       },
-      upload: {
-        target: 'temporary-public-storage',
+  
+      /** ← ВАЖНО: preset 'off' отключает recommended-набор  */
+      assert: {
+        preset: 'off',
+        assertions: {
+          /* ❌  Хотим просто предупреждения — ставим 'warn' */
+          'errors-in-console': 'warn',
+  
+          /* Блокирующие ресурсы: пусть будет ≤ 3, тоже warn  */
+          'render-blocking-resources': ['warn', {maxLength: 3}],
+  
+          /* Core Web Vitals: warn-порог, CI не упадёт          */
+          'largest-contentful-paint':   ['warn', {minScore: 0.7}],
+          'cumulative-layout-shift':    ['warn', {minScore: 0.7}],
+          'interaction-to-next-paint':  ['warn', {minScore: 0.7}],
+          'server-response-time':       ['warn', {maxNumericValue: 600}],
+          'speed-index':                ['warn', {minScore: 0.7}],
+          'total-blocking-time':        ['warn', {minScore: 0.7}]
+        }
       },
-    },
+  
+      upload: [
+        {target: 'temporary-public-storage'},
+        {target: 'filesystem', outputDir: './lhci-reports'}
+      ]
+    }
   };

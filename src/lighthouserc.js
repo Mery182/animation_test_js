@@ -1,3 +1,4 @@
+/** lighthouserc.js — ESM */
 export default {
   ci: {
     collect: {
@@ -13,38 +14,33 @@ export default {
         preset: 'mobile',
         formFactor: 'mobile',
         throttlingMethod: 'devtools',
-        screenEmulation: {
-          mobile: true,
-          width: 360,
-          height: 640,
-          deviceScaleFactor: 2,
-          disabled: false
-        }
+        screenEmulation: { mobile: true, width: 360, height: 640, deviceScaleFactor: 2 }
       }
     },
 
+    /** ← ВАЖНО: preset 'off' отключает recommended-набор  */
     assert: {
-        // ⬇️ выключаем recommended-пресет
-        preset: 'off',
+      preset: 'off',
       assertions: {
-        /* Ошибки и предупреждения */
-        'errors-in-console': 'off',
-        'meta-description': 'off',
-        'render-blocking-resources': 'off',
+        /* ❌  Хотим просто предупреждения — ставим 'warn' */
+        'errors-in-console': 'warn',
 
-        /* Core Web Vitals */
-        'largest-contentful-paint': ['warn', { minScore: 0.7 }],
-        'cumulative-layout-shift':  ['warn', { minScore: 0.7 }],
-        'interaction-to-next-paint': ['warn', { minScore: 0.7 }],
-        'server-response-time':     ['warn', { maxNumericValue: 600 }],
-        'speed-index':              ['warn', { minScore: 0.7 }],
-        'total-blocking-time':      ['warn', { minScore: 0.7 }]
+        /* Блокирующие ресурсы: пусть будет ≤ 3, тоже warn  */
+        'render-blocking-resources': ['warn', {maxLength: 3}],
+
+        /* Core Web Vitals: warn-порог, CI не упадёт          */
+        'largest-contentful-paint':   ['warn', {minScore: 0.7}],
+        'cumulative-layout-shift':    ['warn', {minScore: 0.7}],
+        'interaction-to-next-paint':  ['warn', {minScore: 0.7}],
+        'server-response-time':       ['warn', {maxNumericValue: 600}],
+        'speed-index':                ['warn', {minScore: 0.7}],
+        'total-blocking-time':        ['warn', {minScore: 0.7}]
       }
     },
 
     upload: [
-      { target: 'temporary-public-storage' },
-      { target: 'filesystem', outputDir: './lhci-reports' }
+      {target: 'temporary-public-storage'},
+      {target: 'filesystem', outputDir: './lhci-reports'}
     ]
   }
 };
