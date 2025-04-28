@@ -20,8 +20,29 @@
         </header>
         <div class="all-box" id="anime-box"></div>
     </div>
-
-     <script>
+    <script type="module">
+        // импорт из официального ES-модуля на jsDelivr
+        import anime from 'https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js';
+      
+        document.addEventListener("DOMContentLoaded", () => {
+          const totalCards = 200;
+          const gridContainer = document.getElementById('anime-box');
+          for (let i = 0; i < totalCards; i++) {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            gridContainer.appendChild(card);
+            anime({
+              targets: card,
+              opacity: [0, 1],
+              translateX: [300, 0],
+              duration: 500,
+              easing: 'easeOutElastic',
+              delay: i * 100,
+            });
+          }
+        });
+      </script>
+     <!-- <script>
 const totalCards = 200;
 const gridContainer = document.getElementById('anime-box');
 
@@ -50,6 +71,6 @@ function addCards() {
 document.addEventListener("DOMContentLoaded", () => {
   addCards();
 });
-     </script>
+     </script> -->
 </body>
 </html>
