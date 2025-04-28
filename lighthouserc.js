@@ -1,7 +1,7 @@
 export default {
     ci: {
       collect: {
-        url: ['http://localhost:8080/'],
+        url: ['http://localhost:3000/'],
         numberOfRuns: 3,
       },
       upload: {
