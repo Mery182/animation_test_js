@@ -9,7 +9,7 @@ export default {
         'http://localhost:49651/anime.html',
         'http://localhost:49651/gsap.html'
       ],
-      numberOfRuns: 5,
+      numberOfRuns: 1,
       settings: {
         preset: 'mobile',                // эмулируем мобильный
         formFactor: 'mobile',

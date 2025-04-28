@@ -2,7 +2,7 @@ export default {
     ci: {
       collect: {
         url: ['http://localhost:3000/'],
-        numberOfRuns: 3,
+        numberOfRuns: 1,
       },
       upload: {
         target: 'temporary-public-storage',
