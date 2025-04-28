@@ -6,8 +6,7 @@
     <title>AnimeJS</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;900&display=swap">
 <!-- вместо src="/stats.js" -->
-  <script type="module" crossorigin src="/animation_test_js/assets/anime-DKxFemlH.js"></script>
-  <link rel="modulepreload" crossorigin href="/animation_test_js/assets/web-vitals-CZUBIn99.js">
+  <script type="module" crossorigin src="/animation_test_js/assets/web-vitals-CZUBIn99.js"></script>
   <link rel="stylesheet" crossorigin href="/animation_test_js/assets/web-vitals-fy0OsSDI.css">
 </head>
 <body>
@@ -20,5 +19,36 @@
         </header>
         <div class="all-box" id="anime-box"></div>
     </div>
+    <!-- <script type="module"  src="src/cards-animation.js"></script> -->
+     <script>
+        const totalCards = 200;
+const gridContainer = document.getElementById('anime-box');
+
+function createCard(index) {
+  const card = document.createElement('div');
+  card.classList.add('card');
+  card.dataset.index = index;
+  return card;
+}
+
+function addCards() {
+  for (let i = 0; i < totalCards; i++) {
+    const card = createCard(i);
+    gridContainer.appendChild(card);
+    anime({
+      targets: card,
+      opacity: [0, 1],
+      translateX: [300, 0],
+      duration: 500,
+      easing: 'easeOutElastic',
+      delay: i * 100,
+    });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  addCards();
+});
+     </script>
 </body>
 </html>
