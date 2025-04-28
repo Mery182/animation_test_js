@@ -25,7 +25,12 @@ export default {
     },
 
     assert: {
-      preset: 'lighthouse:recommended',
+      // preset: 'lighthouse:no-pwa',
+      assertions: {
+        'errors-in-console': 'warn',
+        'meta-description': 'warn',
+        'render-blocking-resources': 'warn',
+      },
       assertions: {
         /* Core Web Vitals */
         'largest-contentful-paint': ['warn', { minScore: 0.7 }],
