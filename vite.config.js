@@ -2,7 +2,7 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  // base: '/animation_test_js/',
+  base: '/animation_test_js/',
   server: {
     open: true, 
     port: 3000  
