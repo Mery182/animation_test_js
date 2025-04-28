@@ -1,11 +1,11 @@
-module.exports = {
+export default {
     ci: {
       collect: {
-        url: ['http://localhost:8080/'], // твой локальный адрес сервера
+        url: ['http://localhost:8080/'],
         numberOfRuns: 3,
       },
       upload: {
-        target: 'temporary-public-storage', // временное хранилище Lighthouse
+        target: 'temporary-public-storage',
       },
     },
   };
