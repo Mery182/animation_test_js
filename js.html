@@ -29,7 +29,7 @@ const boxes = [];
 const boxContainer = document.getElementById("box-container");
 const animationType = document.getElementById("type");
 
-for (let x = 0; x < 1000; x++) {
+for (let x = 0; x < 200; x++) {
   let div = document.createElement("div");
   div.classList.add("css-anim");
   div.classList.add("box");
@@ -80,24 +80,6 @@ function animate(time) {
 // 🟢 Запускаем анимацию сразу
 window.requestAnimationFrame(animate);
 
-// Оставляем кнопку как переключатель на CSS-анимацию (если нужно)
-// button.addEventListener("click", () => {
-//   if (toggle) {
-//     animationType.textContent = "requestAnimationFrame";
-//     for (let x of boxContainer.children) {
-//       x.classList.remove("css-anim");
-//     }
-//     start = null;
-//     rafId = window.requestAnimationFrame(animate);
-//   } else {
-//     window.cancelAnimationFrame(rafId);
-//     animationType.textContent = "CSS animation";
-//     for (let x of boxContainer.children) {
-//       x.classList.add("css-anim");
-//     }
-//   }
-//   toggle = !toggle;
-// });
     </script>
 </body>
 
