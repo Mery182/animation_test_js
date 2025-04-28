@@ -4,10 +4,10 @@ export default {
     collect: {
       staticDistDir: './dist',
       url: [
-        'http://localhost:49651/index.html',
-        'http://localhost:49651/js.html',
-        'http://localhost:49651/anime.html',
-        'http://localhost:49651/gsap.html'
+        'https://mery182.github.io/animation_test_js',
+        'https://mery182.github.io/animation_test_js/js.html',
+        'https://mery182.github.io/animation_test_js/anime.html',
+        'https://mery182.github.io/animation_test_js/gsap.html'
       ],
       numberOfRuns: 1,
       settings: {
