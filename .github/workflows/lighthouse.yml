@@ -24,10 +24,11 @@ jobs:
       - name: Start Static Server
         run: |
           npm install -g http-server
-          http-server ./ -p 8080 &
+          http-server ./dist -p 8080 &
           sleep 5
 
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.14.x
+
       - name: Run Lighthouse CI
-        run: |
-          npm install -g @lhci/cli@0.14.x
-          lhci autorun
+        run: NODE_OPTIONS="--max_old_space_size=4096" lhci autorun
