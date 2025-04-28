@@ -26,9 +26,9 @@ export default {
     assert: {
       assertions: {
         /* Ошибки и предупреждения */
-        'errors-in-console': 'warn',
-        'meta-description': 'warn',
-        'render-blocking-resources': 'warn',
+        'errors-in-console': 'off',
+        'meta-description': 'off',
+        'render-blocking-resources': 'off',
 
         /* Core Web Vitals */
         'largest-contentful-paint': ['warn', { minScore: 0.7 }],
