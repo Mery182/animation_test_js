@@ -24,6 +24,8 @@ export default {
     },
 
     assert: {
+        // ⬇️ выключаем recommended-пресет
+        preset: 'off',
       assertions: {
         /* Ошибки и предупреждения */
         'errors-in-console': 'off',
