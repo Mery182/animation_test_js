@@ -25,7 +25,8 @@
 
 ## Стек технологий
 
-- **Vue 3** + Composition API
+- **HTML**
+- **JS**
 - **Vite** (быстрая сборка и HMR)
 - **web-vitals** (Google)
 - **stats.js**
