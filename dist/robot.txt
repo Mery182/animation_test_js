@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /
+Allow: /$
+
+Sitemap: https://rokucyber.club/sitemap.xml
+Host: https://rokucyber.club

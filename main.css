@@ -61,9 +61,8 @@ button {
     background: none;
     border: solid 1px;
     border-radius: 2em;
-    font: inherit;
-    height: 65px;
-    padding: 0.75em 2em;
+    font-size: 12px;
+    padding: 3px 12px;
 }
 
 button:hover,
@@ -96,8 +95,9 @@ button:focus {
     border: solid 1px;
     border-radius: 2em;
     font: inherit;
-    font-size: 18px;
-    padding: 12px 22px;
+    font-size: 12px;
+    padding: 3px 12px;
+    height: auto;
     transition: all 0.5s;
 }
 
@@ -113,10 +113,10 @@ button:focus {
     border: solid 1px;
     border-radius: 2em;
     font: inherit;
-    font-size: 18px;
-    padding: 12px 22px;
+    font-size: 12px;
+    padding: 3px 12px;
     transition: all 0.5s;
-    height: 65px;
+    height: auto;
 }
 
 #type {
@@ -162,19 +162,8 @@ button:focus {
         padding: 0 10px;
     }
 
-    button {
-        font-size: 12px;
-    }
-
-    #toggle-button {
-        font-size: 14px;
-        height: auto;
-        padding: 12px 12px;
-    }
-
     #button-two {
         margin-top: 5px;
-        font-size: 14px;
         height: auto;
     }
 

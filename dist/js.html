@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тестирование анимации</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;900&display=swap"> 
+  <script type="module" crossorigin src="/assets/web-vitals-BCxp1YGz.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/web-vitals-Cc51go0Z.css">
+</head>
+
+<body>
+    <header>
+        <h2>CSS animation + JS animation</h2>
+        <div>
+            <a href="/" ><button id="button-two">CSS Animation</button></a>
+            <a href="anime.html"> <button id="button-two">AnimeJS</button></a>
+            <a href="gsap.html"> <button id="button-two">GSAP</button></a>
+        </div>
+        <button>нажми</button>
+    </header>
+    <!--  main container -->
+    <div id="box-container"></div>
+    <!--  -->
+    <script>
+const boxes = [];
+const boxContainer = document.getElementById("box-container");
+const animationType = document.getElementById("type");
+
+for (let x = 0; x < 1000; x++) {
+  let div = document.createElement("div");
+  div.classList.add("css-anim");
+  div.classList.add("box");
+  boxContainer.appendChild(div);
+  boxes.push(div.style);
+}
+
+let toggle = true;
+let rafId;
+
+const duration = 6000;
+const translateY = 500;
+const rotate = 360;
+const scale = 1.4 - 0.6;
+let start;
+
+function animate(time) {
+  if (!start) {
+    start = time;
+    rafId = window.requestAnimationFrame(animate);
+    return;
+  }
+
+  const progress = (time - start) / duration;
+
+  if (progress < 2) {
+    let x = progress * translateY;
+    let transform;
+
+    if (progress >= 1) {
+      x = (2 - progress) * translateY;
+      transform = `translateY(${x}px) rotate(${(2 - progress) * rotate}deg) scale(${0.6 + (2 - progress) * scale})`;
+    } else {
+      transform = `translateY(${x}px) rotate(${progress * rotate}deg) scale(${0.6 + progress * scale})`;
+    }
+
+    for (const box of boxes) {
+      box.transform = transform;
+    }
+
+    rafId = window.requestAnimationFrame(animate);
+  } else {
+    start = null;
+    rafId = window.requestAnimationFrame(animate); // зацикливаем
+  }
+}
+
+// 🟢 Запускаем анимацию сразу
+window.requestAnimationFrame(animate);
+
+// Оставляем кнопку как переключатель на CSS-анимацию (если нужно)
+button.addEventListener("click", () => {
+  if (toggle) {
+    animationType.textContent = "requestAnimationFrame";
+    for (let x of boxContainer.children) {
+      x.classList.remove("css-anim");
+    }
+    start = null;
+    rafId = window.requestAnimationFrame(animate);
+  } else {
+    window.cancelAnimationFrame(rafId);
+    animationType.textContent = "CSS animation";
+    for (let x of boxContainer.children) {
+      x.classList.add("css-anim");
+    }
+  }
+  toggle = !toggle;
+});
+    </script>
+</body>
+
+</html>
