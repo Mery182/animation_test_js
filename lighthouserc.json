@@ -9,7 +9,7 @@
           "http://localhost:3000/anime.html",
           "http://localhost:3000/gsap.html"
         ],
-        "numberOfRuns": 5,
+        "numberOfRuns": 1,
         "settings": {
           "formFactor": "mobile",
           "throttlingMethod": "devtools",
