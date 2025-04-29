@@ -1,56 +1,58 @@
-
 {
-    "ci": {
-      "collect": {
-        "staticDistDir": "./dist",
-        "url": [
-          "http://localhost:3000/index.html",
-          "http://localhost:3000/anime.html",
-          "http://localhost:3000/gsap.html"
-        ],
-        "numberOfRuns": 1,
-        "settings": {
-          "formFactor": "mobile",
-          "throttlingMethod": "devtools",
-          "screenEmulation": {
-            "mobile": true,
-            "width": 360,
-            "height": 640,
-            "deviceScaleFactor": 2,
-            "disabled": false
-          },
-          "config": {
-            "extends": "lighthouse:default",
-            "audits": [
-              {
-                "path": "errors-in-console",
-                "options": {
-                  "ignoredPatterns": [
-                    "Blocked script execution in “about:blank”",
-                    "my-non-critical-warning"
-                  ]
-                }
+  "ci": {
+    "collect": {
+      "staticDistDir": "./dist",
+      "url": [
+        "http://localhost:3000/index.html",
+        "http://localhost:3000/anime.html",
+        "http://localhost:3000/gsap.html"
+      ],
+      "numberOfRuns": 1,
+      "settings": {
+        "formFactor": "mobile",
+        "throttlingMethod": "devtools",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 360,
+          "height": 640,
+          "deviceScaleFactor": 2,
+          "disabled": false
+        },
+        "config": {
+          "extends": "lighthouse:default",
+          "audits": [
+            {
+              "path": "errors-in-console",
+              "options": {
+                "ignoredPatterns": [
+                  "Blocked script execution in \"about:blank\"",
+                  "my-non-critical-warning"
+                ]
               }
-            ]
-          }
+            }
+          ]
         }
-      },
-      "assert": {
-        "preset": "lighthouse:recommended",
-        "assertions": {
-          "errors-in-console": "off",
-          "render-blocking-resources": "off",
-          "largest-contentful-paint":   ["warn", { "minScore": 0.7 }],
-          "cumulative-layout-shift":    ["warn", { "minScore": 0.7 }],
-          "interaction-to-next-paint":  ["warn", { "minScore": 0.7 }],
-          "speed-index":                ["warn", { "minScore": 0.7 }],
-          "total-blocking-time":        ["warn", { "minScore": 0.7 }],
-          "server-response-time":       ["warn", { "maxNumericValue": 600 }]
-        }
-      },
-      "upload": [
-        { "target": "temporary-public-storage" },
-        { "target": "filesystem", "outputDir": "./lhci-reports" }
-      ]
-    }
+      }
+    },
+
+    "assert": {
+      "preset": "lighthouse:recommended",
+      "assertions": {
+        "errors-in-console": "off",
+        "render-blocking-resources": "off",
+        "largest-contentful-paint":    ["warn", { "minScore": 0.7 }],
+        "cumulative-layout-shift":     ["warn", { "minScore": 0.7 }],
+        "interaction-to-next-paint":   ["warn", { "minScore": 0.7 }],
+        "speed-index":                 ["warn", { "minScore": 0.7 }],
+        "total-blocking-time":         ["warn", { "minScore": 0.7 }],
+        "server-response-time":        ["warn", { "maxNumericValue": 600 }]
+      }
+    },
+
+    "upload": [
+      {
+        "target": "temporary-public-storage"
+      }
+    ]
   }
+}
