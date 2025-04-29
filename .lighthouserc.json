@@ -50,8 +50,14 @@
     },
 
     "upload": [
+     
+      { "target": "filesystem", "outputDir": "./lhci-reports" },
+
+    
       {
-        "target": "temporary-public-storage"
+        "target": "lhci",
+        "serverBaseUrl": "https://app.lighthouse-ci.com", 
+        "token": "${LHCI_TOKEN}"                          
       }
     ]
   }
