@@ -5,7 +5,6 @@
         "staticDistDir": "./dist",
         "url": [
           "http://localhost:3000/index.html",
-          "http://localhost:3000/js.html",
           "http://localhost:3000/anime.html",
           "http://localhost:3000/gsap.html"
         ],
