@@ -1,55 +1,39 @@
-name: Deploy & Lighthouse CI Audit
+# .github/workflows/lighthouse.yml
+name: Lighthouse CI Audit
 
 on:
   push:
     branches: [main]
 
 jobs:
-  audit:
+  lighthouseci:
     runs-on: ubuntu-latest
+    env:
+      LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }} # ← ваш токен
 
     steps:
-      # 1 — клонируем репозиторий
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # 2 — ставим Node 20 + кешируем node_modules
-      - name: Setup Node .js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
-      # 3 — устанавливаем зависимости
-      - name: Install dependencies
-        run: npm ci
+      - name: Install deps & build
+        run: |
+          npm ci
+          npm run build
 
-      # 4 — production-сборка (vite build)
-      - name: Build project
-        run: npm run build
-
-      # 5 — поднимаем простой сервер, чтобы Lighthouse мог зайти по URL
       - name: Start preview server
         run: |
-          npm i -g http-server
-          http-server ./dist -p 8080 &
-          sleep 5
+          npx http-server ./dist -p 8080 &
+          sleep 7
 
-      # 6 — ставим LHCI CLI
-      - name: Install Lighthouse CI
-        run: npm i -g @lhci/cli@0.14.x
-
-      # 7 — запускаем аудит
       - name: Run Lighthouse CI
-        env:
-          # секрет не обязателен, нужен только если в .lighthouserc есть target: "lhci"
-          LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }}
-        run: lhci autorun
+        run: npx lhci autorun --config .lighthouserc.js
 
-      # 8 — сохраняем html + json отчёты как artifacts
-      - name: Upload Lighthouse reports
-        if: always() # загружать даже при warning/fail
+      - name: Upload reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: lhci-reports
-          path: ./lhci-reports/** # путь совпадает с outputDir из .lighthouserc
+          path: lhci-reports/**
