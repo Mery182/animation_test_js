@@ -2,7 +2,7 @@
 export default {
   ci: {
     collect: {
-      staticDistDir: './dist',
+      // staticDistDir: './dist',
       url: [
         // 'http://localhost:8080/index.html',
         // 'http://localhost:8080/js.html',
@@ -52,7 +52,7 @@ export default {
 
     /*  assert → решаем, падает CI или нет  */
     assert: {
-      preset: 'off',           // не грузим жёсткий recommended-набор
+      preset: 'lighthouse:recommended',
       assertions: {
         // errors-in-console теперь будет WARN,
         // а не «падать» при любом найденном сообщении
