@@ -19,7 +19,7 @@ jobs:
           node-version: "20"
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm install
 
       - name: Start Static Server
         run: |
@@ -33,9 +33,8 @@ jobs:
       - name: Run Lighthouse CI
         run: lhci autorun
 
-      # ─────── здесь добавляем публикацию артефакта ───────
-      - name: Upload LHCI reports
-        uses: actions/upload-artifact@v3
+      - name: Upload Lighthouse CI HTML Reports
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: lhci-reports
-          path: ./lhci-reports
+          path: .lighthouseci # или ./lhci-reports, в зависимости от вашей конфигурации upload.target=filesystem
