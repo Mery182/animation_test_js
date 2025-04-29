@@ -3,11 +3,12 @@
     "collect": {
       "staticDistDir": "./dist",
       "url": [
-        "http://localhost:3000/index.html",
-        "http://localhost:3000/anime.html",
-        "http://localhost:3000/gsap.html"
+        "http://localhost:8080/index.html",
+        "http://localhost:8080/anime.html",
+        "http://localhost:8080/gsap.html"
       ],
       "numberOfRuns": 1,
+
       "settings": {
         "formFactor": "mobile",
         "throttlingMethod": "devtools",
@@ -17,21 +18,22 @@
           "height": 640,
           "deviceScaleFactor": 2,
           "disabled": false
-        },
-        "config": {
-          "extends": "lighthouse:default",
-          "audits": [
-            {
-              "path": "errors-in-console",
-              "options": {
-                "ignoredPatterns": [
-                  "Blocked script execution in \"about:blank\"",
-                  "my-non-critical-warning"
-                ]
-              }
-            }
-          ]
         }
+      },
+
+      "config": {
+        "extends": "lighthouse:default",
+        "audits": [
+          {
+            "path": "errors-in-console",
+            "options": {
+              "ignoredPatterns": [
+                "Blocked script execution in \"about:blank\"",
+                "my-non-critical-warning"
+              ]
+            }
+          }
+        ]
       }
     },
 
@@ -40,24 +42,19 @@
       "assertions": {
         "errors-in-console": "off",
         "render-blocking-resources": "off",
-        "largest-contentful-paint":    ["warn", { "minScore": 0.7 }],
-        "cumulative-layout-shift":     ["warn", { "minScore": 0.7 }],
-        "interaction-to-next-paint":   ["warn", { "minScore": 0.7 }],
-        "speed-index":                 ["warn", { "minScore": 0.7 }],
-        "total-blocking-time":         ["warn", { "minScore": 0.7 }],
-        "server-response-time":        ["warn", { "maxNumericValue": 600 }]
+        "largest-contentful-paint": ["warn", { "minScore": 0.7 }],
+        "cumulative-layout-shift":  ["warn", { "minScore": 0.7 }],
+        "interaction-to-next-paint":["warn", { "minScore": 0.7 }],
+        "speed-index":              ["warn", { "minScore": 0.7 }],
+        "total-blocking-time":      ["warn", { "minScore": 0.7 }],
+        "server-response-time":     ["warn", { "maxNumericValue": 600 }]
       }
     },
 
     "upload": [
-     
-      { "target": "filesystem", "outputDir": "./lhci-reports" },
-
-    
       {
-        "target": "lhci",
-        "serverBaseUrl": "https://app.lighthouse-ci.com", 
-        "token": "${LHCI_TOKEN}"                          
+        "target": "filesystem",
+        "outputDir": "./lhci-reports"
       }
     ]
   }
