@@ -1,3 +1,4 @@
+
 {
     "ci": {
       "collect": {
@@ -8,11 +9,8 @@
           "http://localhost:3000/anime.html",
           "http://localhost:3000/gsap.html"
         ],
-
         "numberOfRuns": 5,
-
         "settings": {
-          "preset": "mobile",
           "formFactor": "mobile",
           "throttlingMethod": "devtools",
           "screenEmulation": {
@@ -22,7 +20,6 @@
             "deviceScaleFactor": 2,
             "disabled": false
           },
-
           "config": {
             "extends": "lighthouse:default",
             "audits": [
@@ -44,7 +41,6 @@
         "assertions": {
           "errors-in-console": "off",
           "render-blocking-resources": "off",
-  
           "largest-contentful-paint":   ["warn", { "minScore": 0.7 }],
           "cumulative-layout-shift":    ["warn", { "minScore": 0.7 }],
           "interaction-to-next-paint":  ["warn", { "minScore": 0.7 }],
@@ -53,7 +49,6 @@
           "server-response-time":       ["warn", { "maxNumericValue": 600 }]
         }
       },
-  
       "upload": [
         { "target": "temporary-public-storage" },
         { "target": "filesystem", "outputDir": "./lhci-reports" }
