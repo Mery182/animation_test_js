@@ -1,38 +1,4 @@
-# name: Lighthouse CI Audit
-
-# on:
-#   push:
-#     branches:
-#       - main
-
-# jobs:
-#   lighthouseci:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout Repository
-#         uses: actions/checkout@v4
-
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: "20"
-
-#       - name: Install Dependencies
-#         run: npm install
-
-#       - name: Start Static Server
-#         run: |
-#           npm install -g http-server
-#           http-server ./dist -p 8080 &
-#           sleep 5
-
-#       - name: Install Lighthouse CI
-#         run: npm install -g @lhci/cli@0.14.x
-
-#       - name: Run Lighthouse CI
-#         run: NODE_OPTIONS="--max_old_space_size=4096" lhci autorun
-name: Deploy and Audit with Lighthouse CI
+name: Lighthouse CI Audit
 
 on:
   push:
@@ -40,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy-and-audit:
+  lighthouseci:
     runs-on: ubuntu-latest
 
     steps:
@@ -55,17 +21,11 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Project
-        run: npm run build
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-
-      - name: Wait for GitHub Pages Deployment
-        run: sleep 60 # Ждать 1 минуту для публикации
+      - name: Start Static Server
+        run: |
+          npm install -g http-server
+          http-server ./dist -p 8080 &
+          sleep 5
 
       - name: Install Lighthouse CI
         run: npm install -g @lhci/cli@0.14.x
