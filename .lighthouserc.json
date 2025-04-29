@@ -1,7 +1,8 @@
 {
   "ci": {
     "collect": {
-      "staticDistDir": "./dist",              // ← строка, а не объект
+      "staticDistDir": "./dist",
+
       "url": [
         "http://localhost:8080/index.html",
         "http://localhost:8080/anime.html",
@@ -21,8 +22,8 @@
         }
       },
 
-      "config": {                             // config должен быть
-        "extends": "lighthouse:default",      //     на уровне collect
+      "config": {
+        "extends": "lighthouse:default",
         "audits": [
           {
             "path": "errors-in-console",
@@ -53,9 +54,8 @@
     },
 
     "upload": [
-      { "target": "filesystem", "outputDir": "./lhci-reports" }
-
-      ,{
+      { "target": "filesystem", "outputDir": "./lhci-reports" },
+      {
         "target": "lhci",
         "serverBaseUrl": "https://app.lighthouse-ci.com",
         "token": "${LHCI_TOKEN}"
