@@ -1,7 +1,7 @@
 {
   "ci": {
     "collect": {
-      "staticDistDir": "./dist",
+      "staticDistDir": "./dist",              // ← строка, а не объект
       "url": [
         "http://localhost:8080/index.html",
         "http://localhost:8080/anime.html",
@@ -21,8 +21,8 @@
         }
       },
 
-      "config": {
-        "extends": "lighthouse:default",
+      "config": {                             // config должен быть
+        "extends": "lighthouse:default",      //     на уровне collect
         "audits": [
           {
             "path": "errors-in-console",
@@ -42,19 +42,23 @@
       "assertions": {
         "errors-in-console": "off",
         "render-blocking-resources": "off",
+
         "largest-contentful-paint": ["warn", { "minScore": 0.7 }],
         "cumulative-layout-shift":  ["warn", { "minScore": 0.7 }],
         "interaction-to-next-paint":["warn", { "minScore": 0.7 }],
-        "speed-index":              ["warn", { "minScore": 0.7 }],
-        "total-blocking-time":      ["warn", { "minScore": 0.7 }],
-        "server-response-time":     ["warn", { "maxNumericValue": 600 }]
+        "speed-index":             ["warn", { "minScore": 0.7 }],
+        "total-blocking-time":     ["warn", { "minScore": 0.7 }],
+        "server-response-time":    ["warn", { "maxNumericValue": 600 }]
       }
     },
 
     "upload": [
-      {
-        "target": "filesystem",
-        "outputDir": "./lhci-reports"
+      { "target": "filesystem", "outputDir": "./lhci-reports" }
+
+      ,{
+        "target": "lhci",
+        "serverBaseUrl": "https://app.lighthouse-ci.com",
+        "token": "${LHCI_TOKEN}"
       }
     ]
   }
