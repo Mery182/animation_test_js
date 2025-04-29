@@ -2,8 +2,7 @@ name: Lighthouse CI Audit
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   lighthouseci:
@@ -13,28 +12,29 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: 20
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci # чуть быстрее, чем npm install
 
-      - name: Start Static Server
+      - name: Start preview server
         run: |
-          npm install -g http-server
+          npm i -g http-server
           http-server ./dist -p 8080 &
           sleep 5
 
       - name: Install Lighthouse CI
-        run: npm install -g @lhci/cli@0.14.x
+        run: npm i -g @lhci/cli@0.14.x
 
       - name: Run Lighthouse CI
         run: lhci autorun
 
-      - name: Upload Lighthouse CI HTML Reports
-        uses: actions/upload-artifact@v3.1.2
+      - name: Upload Lighthouse reports
+        if: always() # чтобы выгрузить даже при warning’ах
+        uses: actions/upload-artifact@v4
         with:
           name: lhci-reports
-          path: .lighthouseci # или ./lhci-reports, в зависимости от вашей конфигурации upload.target=filesystem
+          path: .lighthouseci # или ./lhci-reports, если так настроено в lighthouserc
