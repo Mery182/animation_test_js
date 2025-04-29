@@ -1,19 +1,55 @@
-- name: Build project # чтобы dist уже существовал
-  run: npm run build
+name: Deploy & Lighthouse CI Audit
 
-- name: Start preview server # 8080, как в конфиге
-  run: |
-    npm i -g http-server
-    http-server ./dist -p 8080 &
-    sleep 5
+on:
+  push:
+    branches: [main]
 
-- name: Run Lighthouse CI
-  env:
-    LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }} # нужен только для target=lhci
-  run: lhci autorun
+jobs:
+  audit:
+    runs-on: ubuntu-latest
 
-- name: Upload reports # путь совпадает с outputDir
-  uses: actions/upload-artifact@v4
-  with:
-    name: lhci-reports
-    path: lhci-reports/**
+    steps:
+      # 1 — клонируем репозиторий
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2 — ставим Node 20 + кешируем node_modules
+      - name: Setup Node .js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # 3 — устанавливаем зависимости
+      - name: Install dependencies
+        run: npm ci
+
+      # 4 — production-сборка (vite build)
+      - name: Build project
+        run: npm run build
+
+      # 5 — поднимаем простой сервер, чтобы Lighthouse мог зайти по URL
+      - name: Start preview server
+        run: |
+          npm i -g http-server
+          http-server ./dist -p 8080 &
+          sleep 5
+
+      # 6 — ставим LHCI CLI
+      - name: Install Lighthouse CI
+        run: npm i -g @lhci/cli@0.14.x
+
+      # 7 — запускаем аудит
+      - name: Run Lighthouse CI
+        env:
+          # секрет не обязателен, нужен только если в .lighthouserc есть target: "lhci"
+          LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }}
+        run: lhci autorun
+
+      # 8 — сохраняем html + json отчёты как artifacts
+      - name: Upload Lighthouse reports
+        if: always() # загружать даже при warning/fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: lhci-reports
+          path: ./lhci-reports/** # путь совпадает с outputDir из .lighthouserc
