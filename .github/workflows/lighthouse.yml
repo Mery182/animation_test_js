@@ -55,9 +55,8 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # Твой билд, если нужен:
-      # - name: Build Project
-      #   run: npm run build
+      - name: Build Project
+        run: npm run build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
