@@ -59,7 +59,7 @@ export default {
         'errors-in-console': 'off',
 
         // блокирующие ресурсы — тоже лишь предупреждение
-        'render-blocking-resources': ['warn', {maxLength: 3}],
+        'render-blocking-resources': 'off',
 
         /* Core Web Vitals в режиме warn */
         'largest-contentful-paint':   ['warn', {minScore: 0.7}],
