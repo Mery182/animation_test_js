@@ -17,11 +17,12 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Dependencies
-        run: npm ci # чуть быстрее, чем npm install
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Start preview server
+      - name: Build & start preview server # если сборки нет — оставьте только server
         run: |
+          # npm run build
           npm i -g http-server
           http-server ./dist -p 8080 &
           sleep 5
@@ -30,10 +31,13 @@ jobs:
         run: npm i -g @lhci/cli@0.14.x
 
       - name: Run Lighthouse CI
+        env:
+          LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }} # ← передаём секрет
         run: lhci autorun
 
+      # (необязательно) складываем html/json в artifacts
       - name: Upload Lighthouse reports
-        if: always()
+        if: always() # чтобы грузить даже при warn/fail
         uses: actions/upload-artifact@v4
         with:
           name: lhci-reports
