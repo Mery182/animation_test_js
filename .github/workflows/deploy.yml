@@ -1,31 +1,31 @@
-name: Deploy Static JS Site to GitHub Pages
+steps:
+  - uses: actions/checkout@v4
 
-on:
-  push:
-    branches:
-      - main
+  - uses: actions/setup-node@v4
+    with:
+      node-version: 20
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  - name: Install & build
+    run: |
+      npm ci
+      npm run build
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  # Отладка ─ покажет, что .lighthouserc.js лежит рядом
+  - run: ls -la
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
+  - name: Serve dist
+    run: |
+      npx http-server ./dist -p 8080 &
+      sleep 7
 
-      - name: Install dependencies
-        run: npm install
+  - name: Run Lighthouse CI
+    env:
+      LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }}
+    run: npx lhci autorun # без --config
 
-      - name: Build project
-        run: npm run build
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+  - name: Upload reports
+    if: always()
+    uses: actions/upload-artifact@v4
+    with:
+      name: lhci-reports
+      path: lhci-reports/**
