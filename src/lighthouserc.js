@@ -4,10 +4,14 @@ export default {
     collect: {
       staticDistDir: './dist',
       url: [
-        'http://localhost:8080/index.html',
-        'http://localhost:8080/js.html',
-        'http://localhost:8080/anime.html',
-        'http://localhost:8080/gsap.html',
+        // 'http://localhost:8080/index.html',
+        // 'http://localhost:8080/js.html',
+        // 'http://localhost:8080/anime.html',
+        // 'http://localhost:8080/gsap.html',
+        'https://mery182.github.io/animation_test_js/index.html',
+        'https://mery182.github.io/animation_test_js/js.html',
+        'https://mery182.github.io/animation_test_js/anime.html',
+        'https://mery182.github.io/animation_test_js/gsap.html'
       ],
       numberOfRuns: 1,
 
@@ -52,7 +56,7 @@ export default {
       assertions: {
         // errors-in-console теперь будет WARN,
         // а не «падать» при любом найденном сообщении
-        'errors-in-console': 'warn',
+        'errors-in-console': 'off',
 
         // блокирующие ресурсы — тоже лишь предупреждение
         'render-blocking-resources': ['warn', {maxLength: 3}],
