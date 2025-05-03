@@ -1,39 +1,21 @@
-# .github/workflows/lighthouse.yml
-name: Lighthouse CI Audit
-
-on:
-  push:
-    branches: [main]
-
+name: Lighthouse CI
+on: push
 jobs:
-  lighthouseci:
+  lighthouse:
     runs-on: ubuntu-latest
-    env:
-      LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }} # ← ваш токен
-
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@v12
         with:
-          node-version: 20
+          urls: |
+            https://mery182.github.io/animation_test_js
+            https://mery182.github.io/animation_test_js/js.html
+            https://mery182.github.io/animation_test_js/anime.html
+            https://mery182.github.io/animation_test_js/gsap.html
+          budgetPath: ./budget.json # test performance budgets
+          uploadArtifacts: true # save results as an action artifacts
+          temporaryPublicStorage: true # upload lighthouse report to the temporary storage https://mery182.github.io/animation_test_js/
 
-      - name: Install deps & build
-        run: |
-          npm ci
-          npm run build
 
-      - name: Start preview server
-        run: |
-          npx http-server ./dist -p 8080 &
-          sleep 7
-
-      - name: Run Lighthouse CI
-        run: npx lhci autorun --config .lighthouserc.js
-
-      - name: Upload reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: lhci-reports
-          path: lhci-reports/**
+          # budgetPath: ./budget.json # test performance budgets
