@@ -1,31 +1,44 @@
-steps:
-  - uses: actions/checkout@v4
+name: Lighthouse CI
 
-  - uses: actions/setup-node@v4
-    with:
-      node-version: 20
+# 1) здесь задаём триггер — на какие события запускать CI
+on:
+  push:
+    branches: [main]
+  pull_request:
 
-  - name: Install & build
-    run: |
-      npm ci
-      npm run build
+# 2) описываем сами задания
+jobs:
+  lhci:
+    runs-on: ubuntu-latest
 
-  # Отладка ─ покажет, что .lighthouserc.js лежит рядом
-  - run: ls -la
+    steps:
+      - uses: actions/checkout@v4
 
-  - name: Serve dist
-    run: |
-      npx http-server ./dist -p 8080 &
-      sleep 7
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-  - name: Run Lighthouse CI
-    env:
-      LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }}
-    run: npx lhci autorun # без --config
+      - name: Install & build
+        run: |
+          npm ci
+          npm run build
 
-  - name: Upload reports
-    if: always()
-    uses: actions/upload-artifact@v4
-    with:
-      name: lhci-reports
-      path: lhci-reports/**
+      - name: Debug files
+        run: ls -la
+
+      - name: Serve dist locally
+        run: |
+          npx http-server ./dist -p 8080 &
+          sleep 7
+
+      - name: Run Lighthouse CI
+        env:
+          LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }}
+        run: npx lhci autorun # автоматически подхватит ваш .lighthouserc.json
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lhci-reports
+          path: lhci-reports/**
