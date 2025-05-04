@@ -1,44 +1,64 @@
-name: Lighthouse CI
+# .github/workflows/deploy.yml
 
-# 1) здесь задаём триггер — на какие события запускать CI
+name: Build & Deploy to GitHub Pages
+
+# Триггер: при пуше в ветку main
 on:
   push:
-    branches: [main]
-  pull_request:
+    branches:
+      - main
 
-# 2) описываем сами задания
+permissions:
+  contents: read # чтобы выполнить checkout
+  pages: write # чтобы публиковать в GitHub Pages
+  id-token: write # нужно для authenticate-pages
+
 jobs:
-  lhci:
+  build:
+    name: 🛠 Build
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: "20"
 
-      - name: Install & build
-        run: |
-          npm ci
-          npm run build
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Debug files
-        run: ls -la
+      - name: Build project
+        run: npm run build
+        # В результате в папке ./dist будут готовые статические файлы
 
-      - name: Serve dist locally
-        run: |
-          npx http-server ./dist -p 8080 &
-          sleep 7
-
-      - name: Run Lighthouse CI
-        env:
-          LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }}
-        run: npx lhci autorun # автоматически подхватит ваш .lighthouserc.json
-
-      - name: Upload reports
-        if: always()
+      - name: Archive build output
         uses: actions/upload-artifact@v4
         with:
-          name: lhci-reports
-          path: lhci-reports/**
+          name: dist
+          path: dist/
+
+  deploy:
+    name: 🚀 Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: ./dist
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./dist
+
+      - name: Publish to GitHub Pages
+        uses: actions/publish-pages@v1
