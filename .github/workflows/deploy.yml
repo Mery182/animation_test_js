@@ -51,14 +51,7 @@ jobs:
 
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v12
-        env:
-          LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
         with:
-          urls: |
-            ${{ needs.build-and-deploy.outputs.page-url }}
-            ${{ needs.build-and-deploy.outputs.page-url }}js.html
-            ${{ needs.build-and-deploy.outputs.page-url }}anime.html
-            ${{ needs.build-and-deploy.outputs.page-url }}gsap.html
+          configPath: ./lighthouserc.json
           budgetPath: ./budget.json
           uploadArtifacts: true
-          temporaryPublicStorage: true

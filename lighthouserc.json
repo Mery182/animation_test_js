@@ -1,0 +1,16 @@
+{
+  "ci": {
+    "collect": {
+      "url": [
+        "https://mery182.github.io/animation_test_js/",
+        "https://mery182.github.io/animation_test_js/js.html",
+        "https://mery182.github.io/animation_test_js/anime.html",
+        "https://mery182.github.io/animation_test_js/gsap.html"
+      ],
+      "numberOfRuns": 1
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  }
+}
