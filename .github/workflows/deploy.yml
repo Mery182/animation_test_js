@@ -1,4 +1,4 @@
-name: Deploy Static JS Site to GitHub Pages
+name: Deploy & Audit Static JS Site
 
 on:
   push:
@@ -9,10 +9,12 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     outputs:
-      url: ${{ steps.set-url.outputs.PAGE_URL }}
+      page-url: ${{ steps.set-url.outputs.PAGE_URL }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # забираем всю историю
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -20,7 +22,7 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build project
         run: npm run build
@@ -32,27 +34,31 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
 
-      # Опционально: вычисляем URL страницы
-      - name: Set page URL
+      - name: Compute Pages URL
         id: set-url
         run: |
           echo "PAGE_URL=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/" >> $GITHUB_OUTPUT
 
   lighthouse:
-    name: 🚀 Lighthouse CI
+    name: 🚀 Run Lighthouse CI
     needs: build-and-deploy
     runs-on: ubuntu-latest
-
     steps:
+      - name: Checkout repository (для budget.json и .git)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # обязательно
+
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v12
+        env:
+          LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
         with:
-          # берём URL из предыдущей задачи
-          urls: ${{ needs.build-and-deploy.outputs.url }}
-          # или перечислите конкретно:
-          # urls: |
-          #   https://ваш_логин.github.io/animation_test_js/
-          #   https://ваш_логин.github.io/animation_test_js/js.html
+          urls: |
+            ${{ needs.build-and-deploy.outputs.page-url }}
+            ${{ needs.build-and-deploy.outputs.page-url }}js.html
+            ${{ needs.build-and-deploy.outputs.page-url }}anime.html
+            ${{ needs.build-and-deploy.outputs.page-url }}gsap.html
           budgetPath: ./budget.json
           uploadArtifacts: true
           temporaryPublicStorage: true
