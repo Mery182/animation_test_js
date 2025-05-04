@@ -45,7 +45,7 @@ jobs:
 
     steps:
       - name: Audit URLs using Lighthouse
-        uses: treosh/lighthouse-ci-action@v14
+        uses: treosh/lighthouse-ci-action@v12
         with:
           # берём URL из предыдущей задачи
           urls: ${{ needs.build-and-deploy.outputs.url }}
