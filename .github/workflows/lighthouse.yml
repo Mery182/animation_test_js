@@ -1,21 +1,22 @@
 name: Lighthouse CI
-on: push
+
+on: deployment_status
+
 jobs:
   lighthouse:
+    if: github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v12
         with:
           urls: |
-            https://mery182.github.io/animation_test_js
+            https://mery182.github.io/animation_test_js/
             https://mery182.github.io/animation_test_js/js.html
             https://mery182.github.io/animation_test_js/anime.html
             https://mery182.github.io/animation_test_js/gsap.html
-          budgetPath: ./budget.json # test performance budgets
-          uploadArtifacts: true # save results as an action artifacts
-          temporaryPublicStorage: true # upload lighthouse report to the temporary storage https://mery182.github.io/animation_test_js/
-
-
-          # budgetPath: ./budget.json # test performance budgets
+          budgetPath: ./budget.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
