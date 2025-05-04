@@ -8,7 +8,8 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
+    outputs:
+      url: ${{ steps.set-url.outputs.PAGE_URL }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,6 +27,32 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
+        id: deploy
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+
+      # Опционально: вычисляем URL страницы
+      - name: Set page URL
+        id: set-url
+        run: |
+          echo "PAGE_URL=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/" >> $GITHUB_OUTPUT
+
+  lighthouse:
+    name: 🚀 Lighthouse CI
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@v13
+        with:
+          # берём URL из предыдущей задачи
+          urls: ${{ needs.build-and-deploy.outputs.url }}
+          # или перечислите конкретно:
+          # urls: |
+          #   https://ваш_логин.github.io/animation_test_js/
+          #   https://ваш_логин.github.io/animation_test_js/js.html
+          budgetPath: ./budget.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
