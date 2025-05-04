@@ -7,7 +7,7 @@
         "https://mery182.github.io/animation_test_js/anime.html",
         "https://mery182.github.io/animation_test_js/gsap.html"
       ],
-      "numberOfRuns": 1
+      "numberOfRuns": 5
     },
     "upload": {
       "target": "temporary-public-storage"
