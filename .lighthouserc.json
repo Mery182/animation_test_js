@@ -2,11 +2,11 @@
   "ci": {
     "collect": {
       "staticDistDir": "./dist",
-
       "url": [
-        "http://localhost:8080/index.html",
-        "http://localhost:8080/anime.html",
-        "http://localhost:8080/gsap.html"
+        "/index.html",
+        "/js.html",
+        "/anime.html",
+        "/gsap.html"
       ],
       "numberOfRuns": 1,
 
