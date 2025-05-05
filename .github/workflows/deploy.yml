@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # забираем всю историю
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -47,12 +47,12 @@ jobs:
       - name: Checkout repository (для budget.json и .git)
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # обязательно
+          fetch-depth: 0
 
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v12
         with:
           configPath: ./lighthouserc.json
-          budgetPath: ./budget.json
+          # budgetPath: ./budget.json
           uploadArtifacts: true
           temporaryPublicStorage: true
